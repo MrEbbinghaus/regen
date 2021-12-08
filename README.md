@@ -5,19 +5,22 @@ Generate optimized regular expressions based of a set of strings.
 ## Usage
 
 As a clj cli tool.
-    clj -M:regen "romane romanus romulus rubens ruber rubicon rubicundus"
-    => (r(om(an(e|us)|ulus)|ub(e(ns|r)|ic(on|undus))))
 
-    clj -M:regen < <(curl -s https://raw.githubusercontent.com/dwyl/english-words/master/words.txt) > my-pattern.txt
+    $ clj -M:regen "romane romanus romulus rubens ruber rubicon rubicundus"
+    (r(om(an(e|us)|ulus)|ub(e(ns|r)|ic(on|undus))))
+
+    $ clj -M:regen < <(curl -s https://raw.githubusercontent.com/dwyl/english-words/master/words.txt) > my-pattern.txt
 
 As a lib
+
     (require '[me.ebbinghaus.regen :as regen])
+    => nil
     (regen/generate-str ["romane" "romanus" "romulus" "rubens" "ruber" "rubicon" "rubicundus"])
     => "(r(om(an(e|us)|ulus)|ub(e(ns|r)|ic(on|undus))))"
 
 Build native binary (needs [babashka](https://babashka.org/) and GraalVM installed):
-    bb native-image
-    
+
+    $ bb native-image    
 
 Run the project's tests:
 
