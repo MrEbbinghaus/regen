@@ -7,7 +7,7 @@
    [org.corfield.build :as bb]))
 
 (def lib 'me.ebbinghaus/regen)
-(def version "1.0.0")
+(def version (format "1.0.%s" (b/git-count-revs nil)))
 
 (defn assoc-lib-info [opts]
   (assoc opts 
