@@ -1,6 +1,7 @@
 (ns me.ebbinghaus.regen
   (:require
-   [clojure.string :as str]))
+   [clojure.string :as str])
+  (:gen-class))
 
 (defn into-trie [trie s]
   (assoc-in trie (conj (vec s) "") s))

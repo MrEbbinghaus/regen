@@ -1,0 +1,36 @@
+{:tasks
+ {:requires ([babashka.fs :as fs]
+             [clojure.string :as str])
+  :init (def windows? (str/starts-with? (System/getProperty "os.name")
+                                        "Windows"))
+  run-main {:doc "Run main"
+            :task (apply clojure "-M -m me.ebbinghaus.regen" *command-line-args*)}
+  uberjar {:doc "Builds uberjar"
+           :task (when (seq (fs/modified-since "regen.jar"
+                                               ["deps.edn" "build.clj" "src" "resources"]))
+                   (clojure "-T:build native-uber :uber-file '\"regen.jar\"'"))}
+  run-uber {:doc "Run uberjar"
+            :depends [uberjar]
+            :task (apply shell "java -jar regen.jar" *command-line-args*)}
+  graalvm {:doc "Checks GRAALVM_HOME env var"
+           :task
+           (let [env (System/getenv "GRAALVM_HOME")]
+             (assert env "Set GRAALVM_HOME")
+             env)}
+  native-image {:doc "Builds native image"
+                :depends [graalvm uberjar]
+                :task (do
+                        (shell (str (fs/file graalvm
+                                             "bin"
+                                             (if windows?
+                                               "gu.cmd"
+                                               "gu")))
+                               "install" "native-image")
+                        (shell (str (fs/file graalvm
+                                             "bin"
+                                             (if windows?
+                                               "native-image.cmd"
+                                               "native-image")))
+                               "-jar" "regen.jar"
+                               "--no-fallback"
+                               "-H:Name=regen"))}}}
