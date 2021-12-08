@@ -55,7 +55,7 @@
 
        singles? (first children)
 
-       :else (str "(" (str/join "|" children) ")"))
+       :else (str "(?:" (str/join "|" children) ")"))
      (when terminate? "?"))))
 
 (defn ^:export make-trie [coll]
@@ -67,5 +67,5 @@
       compress-trie
       to-pattern-str))
 
-(defn ^:export generate-pattern [strings]
+(defn ^:export generate [strings]
   (re-pattern (generate-str strings)))

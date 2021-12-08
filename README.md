@@ -6,34 +6,42 @@ Generate optimized regular expressions based of a set of strings.
 
 As a clj cli tool.
 
-    $ clj -M:regen "romane romanus romulus rubens ruber rubicon rubicundus"
-    (r(om(an(e|us)|ulus)|ub(e(ns|r)|ic(on|undus))))
+```sh-session
+❯ clj -M:regen "romane romanus"                                        
+(?:roman(?:e|us))
 
-    $ clj -M:regen < <(curl -s https://raw.githubusercontent.com/dwyl/english-words/master/words.txt) > my-pattern.txt
+❯ clj -M:regen "romane romanus romulus rubens ruber rubicon rubicundus"
+(?:r(?:om(?:an(?:e|us)|ulus)|ub(?:e(?:ns|r)|ic(?:on|undus))))
 
+❯ clj -M:regen < <(curl -s https://raw.githubusercontent.com/dwyl/english-words/master/words.txt) > my-pattern.txt
+```
 As a lib
 
-    (require '[me.ebbinghaus.regen :as regen])
-    => nil
-    (regen/generate-str ["romane" "romanus" "romulus" "rubens" "ruber" "rubicon" "rubicundus"])
-    => "(r(om(an(e|us)|ulus)|ub(e(ns|r)|ic(on|undus))))"
+```clojure
+(require '[me.ebbinghaus.regen :as regen])
+; => nil
+(regen/generate ["romane" "romanus" "romulus" "rubens" "ruber" "rubicon" "rubicundus"])
+; => #"(?:r(?:om(?:an(?:e|us)|ulus)|ub(?:e(?:ns|r)|ic(?:on|undus))))"
+```
+
 
 Build native binary (needs [babashka](https://babashka.org/) and GraalVM installed):
-
-    $ bb native-image    
+```sh-session
+$ bb native-image    
+```
 
 Run the project's tests:
-
-    $ clojure -T:build test
-
+```sh-session
+$ clojure -T:build test
+```
 Run the project's CI pipeline and build a JAR:
-
-    $ clojure -T:build ci
-
+```sh-session
+$ clojure -T:build ci
+```
 Install it locally (requires the `ci` task be run first):
-
-    $ clojure -T:build install
-
+```sh-session
+$ clojure -T:build install
+```
 
 
 ## License
