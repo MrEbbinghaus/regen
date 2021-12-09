@@ -2,6 +2,12 @@
 
 Generate optimized regular expressions based of a set of strings.
 
+Get it as a lib:
+
+`me.ebbinghaus/regen {:mvn/version "1.0.7"}` [Clojars](https://clojars.org/me.ebbinghaus/regen)
+
+Or a binary
+
 ## Usage
 
 As a clj cli tool.
